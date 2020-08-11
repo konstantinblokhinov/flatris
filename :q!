@@ -1,0 +1,1511 @@
+[33mcommit 811944b7e32d118d3a14efcabeb16189bf9cdde4[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: root <root@centos.local>
+Date:   Tue Aug 11 11:34:20 2020 +0300
+
+    docker inside
+
+[1mdiff --git a/.eslintignore b/.eslintignore[m
+[1mnew file mode 100644[m
+[1mindex 0000000..99a9eb4[m
+[1m--- /dev/null[m
+[1m+++ b/.eslintignore[m
+[36m@@ -0,0 +1,3 @@[m
+[32m+[m[32mflow-typed[m
+[32m+[m[32mweb/.next[m
+[32m+[m[32mweb/cosmos-export[m
+[1mdiff --git a/.eslintrc.js b/.eslintrc.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..3ffcc59[m
+[1m--- /dev/null[m
+[1m+++ b/.eslintrc.js[m
+[36m@@ -0,0 +1,62 @@[m
+[32m+[m[32mmodule.exports = {[m
+[32m+[m[32m  parser: 'babel-eslint',[m
+[32m+[m[32m  extends: [[m
+[32m+[m[32m    'eslint:recommended',[m
+[32m+[m[32m    'plugin:import/errors',[m
+[32m+[m[32m    'plugin:import/warnings',[m
+[32m+[m[32m    'plugin:flowtype/recommended'[m
+[32m+[m[32m  ],[m
+[32m+[m[32m  plugins: ['react', 'flowtype'],[m
+[32m+[m[32m  env: {[m
+[32m+[m[32m    es6: true,[m
+[32m+[m[32m    'shared-node-browser': true[m
+[32m+[m[32m  },[m
+[32m+[m[32m  settings: {[m
+[32m+[m[32m    'import/resolver': {[m
+[32m+[m[32m      'babel-module': {}[m
+[32m+[m[32m    }[m
+[32m+[m[32m  },[m
+[32m+[m[32m  globals: {[m
+[32m+[m[32m    global: true,[m
+[32m+[m[32m    process: true[m
+[32m+[m[32m  },[m
+[32m+[m[32m  rules: {[m
+[32m+[m[32m    'no-console': 'off',[m
+[32m+[m[32m    'flowtype/generic-spacing': 'off'[m
+[32m+[m[32m  },[m
+[32m+[m[32m  overrides: [[m
+[32m+[m[32m    {[m
+[32m+[m[32m      files: [[m
+[32m+[m[32m        '.eslintrc.js',[m
+[32m+[m[32m        'babel.config.js',[m
+[32m+[m[32m        'jest.config.js',[m
+[32m+[m[32m        'jest.framework-setup.js',[m
+[32m+[m[32m        'web/next.config.js',[m
+[32m+[m[32m        'server/**/*.js'[m
+[32m+[m[32m      ],[m
+[32m+[m[32m      env: {[m
+[32m+[m[32m        node: true[m
+[32m+[m[32m      }[m
+[32m+[m[32m    },[m
+[32m+[m[32m    {[m
+[32m+[m[32m      files: ['**/*.test.js'],[m
+[32m+[m[32m      env: {[m
+[32m+[m[32m        jest: true[m
+[32m+[m[32m      }[m
+[32m+[m[32m    },[m
+[32m+[m[32m    {[m
+[32m+[m[32m      files: [[m
+[32m+[m[32m        'web/components/**/*.js',[m
+[32m+[m[32m        'web/pages/**/*.js',[m
+[32m+[m[32m        'web/mocks/**/*.js'[m
+[32m+[m[32m      ],[m
+[32m+[m[32m      rules: {[m
+[32m+[m[32m        'react/jsx-uses-react': 'error',[m
+[32m+[m[32m        'react/jsx-uses-vars': 'error'[m
+[32m+[m[32m      }[m
+[32m+[m[32m    },[m
+[32m+[m[32m    {[m
+[32m+[m[32m      files: ['**/__fixtures__/**/*.js'][m
+[32m+[m[32m    }[m
+[32m+[m[32m  ][m
+[32m+[m[32m};[m
+[1mdiff --git a/.flowconfig b/.flowconfig[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f73400d[m
+[1m--- /dev/null[m
+[1m+++ b/.flowconfig[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m[ignore][m
+[32m+[m[32m.*/node_modules/config-chain/test/broken.json[m
+[32m+[m[32m.*/node_modules/npmconf/test/fixtures/package.json[m
+[32m+[m[32m.*/node_modules/grpc/node_modules/protobufjs/src/bower.json[m
+[32m+[m
+[32m+[m[32m[include][m
+[32m+[m
+[32m+[m[32m[libs][m
+[32m+[m[32mflow-typed[m
+[32m+[m
+[32m+[m[32m[lints][m
+[32m+[m
+[32m+[m[32m[options][m
+[32m+[m[32mmodule.name_mapper='^shared' ->'<PROJECT_ROOT>/shared'[m
+[32m+[m
+[32m+[m[32m[strict][m
+[1mdiff --git a/.github/FUNDING.yml b/.github/FUNDING.yml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f0906c9[m
+[1m--- /dev/null[m
+[1m+++ b/.github/FUNDING.yml[m
+[36m@@ -0,0 +1 @@[m
+[32m+[m[32mgithub: skidding[m
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mnew file mode 100644[m
+[1mindex 0000000..16888a0[m
+[1m--- /dev/null[m
+[1m+++ b/.gitignore[m
+[36m@@ -0,0 +1,8 @@[m
+[32m+[m[32mnode_modules[m
+[32m+[m[32mcosmos-export[m
+[32m+[m[32m.next[m
+[32m+[m[32mfirebase-service-account.json[m
+[32m+[m
+[32m+[m[32mnpm-debug.log*[m
+[32m+[m[32myarn-debug.log*[m
+[32m+[m[32myarn-error.log*[m
+[1mdiff --git a/.prettierignore b/.prettierignore[m
+[1mnew file mode 100644[m
+[1mindex 0000000..b9cceed[m
+[1m--- /dev/null[m
+[1m+++ b/.prettierignore[m
+[36m@@ -0,0 +1,2 @@[m
+[32m+[m[32mpackage.json[m
+[32m+[m[32mflow-typed[m
+[1mdiff --git a/.prettierrc b/.prettierrc[m
+[1mnew file mode 100644[m
+[1mindex 0000000..544138b[m
+[1m--- /dev/null[m
+[1m+++ b/.prettierrc[m
+[36m@@ -0,0 +1,3 @@[m
+[32m+[m[32m{[m
+[32m+[m[32m  "singleQuote": true[m
+[32m+[m[32m}[m
+[1mdiff --git a/.travis.yml b/.travis.yml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..5ae4894[m
+[1m--- /dev/null[m
+[1m+++ b/.travis.yml[m
+[36m@@ -0,0 +1,3 @@[m
+[32m+[m[32mlanguage: node_js[m
+[32m+[m[32mnode_js:[m
+[32m+[m[32m  - 10[m
+[1mdiff --git a/LICENSE b/LICENSE[m
+[1mnew file mode 100644[m
+[1mindex 0000000..559407f[m
+[1m--- /dev/null[m
+[1m+++ b/LICENSE[m
+[36m@@ -0,0 +1,21 @@[m
+[32m+[m[32mMIT License[m
+[32m+[m
+[32m+[m[32mCopyright (c) 2017 Ovidiu Cherecheș[m
+[32m+[m
+[32m+[m[32mPermission is hereby granted, free of charge, to any person obtaining a copy[m
+[32m+[m[32mof this software and associated documentation files (the "Software"), to deal[m
+[32m+[m[32min the Software without restriction, including without limitation the rights[m
+[32m+[m[32mto use, copy, modify, merge, publish, distribute, sublicense, and/or sell[m
+[32m+[m[32mcopies of the Software, and to permit persons to whom the Software is[m
+[32m+[m[32mfurnished to do so, subject to the following conditions:[m
+[32m+[m
+[32m+[m[32mThe above copyright notice and this permission notice shall be included in all[m
+[32m+[m[32mcopies or substantial portions of the Software.[m
+[32m+[m
+[32m+[m[32mTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR[m
+[32m+[m[32mIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,[m
+[32m+[m[32mFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE[m
+[32m+[m[32mAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER[m
+[32m+[m[32mLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,[m
+[32m+[m[32mOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE[m
+[32m+[m[32mSOFTWARE.[m
+[1mdiff --git a/README.md b/README.md[m
+[1mnew file mode 100644[m
+[1mindex 0000000..0165b54[m
+[1m--- /dev/null[m
+[1m+++ b/README.md[m
+[36m@@ -0,0 +1,25 @@[m
+[32m+[m[32m[![Flatris](flatris.png)](https://flatris.space/)[m
+[32m+[m
+[32m+[m[32m[![Build Status](https://travis-ci.org/skidding/flatris.svg?branch=master)](https://travis-ci.org/skidding/flatris)[m
+[32m+[m
+[32m+[m[32m> **Work in progress:** Flatris has been recently redesigned from the ground up and turned into a multiplayer game with both UI and server components. This has been an interesting journey and I plan to document the architecture in depth. **[Stay tuned](https://twitter.com/skidding)**.[m
+[32m+[m
+[32m+[m[32m[![Flatris](flatris.gif)](https://flatris.space/)[m
+[32m+[m
+[32m+[m[32m> **Contribution disclaimer:** Flatris is a web game with an opinionated feature set and architectural design. It doesn't have a roadmap. While I'm generally open to ideas, I would advise against submitting unannounced PRs with new or modified functionality. That said, **bug reports and fixes are most appreciated.**[m
+[32m+[m
+[32m+[m[32mThanks [@paulgergely](https://twitter.com/paulgergely) for the initial flat design![m
+[32m+[m
+[32m+[m[32mAlso see [elm-flatris](https://github.com/w0rm/elm-flatris).[m
+[32m+[m
+[32m+[m
+[32m+[m[32m## Setup and running[m
+[32m+[m
+[32m+[m[32m```[m
+[32m+[m[32myarn install[m
+[32m+[m[32myarn test[m
+[32m+[m[32myarn build[m
+[32m+[m[32myarn start[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mGo to http://localhost:3000[m
+[1mdiff --git a/TODO.md b/TODO.md[m
+[1mnew file mode 100644[m
+[1mindex 0000000..43952f4[m
+[1m--- /dev/null[m
+[1m+++ b/TODO.md[m
+[36m@@ -0,0 +1,199 @@[m
+[32m+[m[32m- [x] Extract Preloader component (get from public/index.html)[m
+[32m+[m[32m- [x] Remove dynamic layout[m
+[32m+[m[32m- [x] Create script for generating media queries for game page[m
+[32m+[m[32m      Search: Does media query include scrollbar? Actually, the whole point is to avoid a scrollbar[m
+[32m+[m[32m- [x] Design game UI screens (new game, pausing)[m
+[32m+[m[32m- [x] Add user list to GamePanel[m
+[32m+[m[32m- [x] Design new game state (with Flow types)[m
+[32m+[m[32m  - [x] Put `curUser` in Redux state[m
+[32m+[m[32m  - [x] Derive playing state from `users(status=playing).len`[m
+[32m+[m[32m- [x] Add missing screens for multiplayer flows[m
+[32m+[m[32m- [x] PIVOT: Turn collaborative Flatris (2-8 players) into competitive 1vs1 Flatris[m
+[32m+[m[32m  - [x] Redesign state and actions[m
+[32m+[m[32m    - [x] Make MOVE, ROTATE, ENABLE_ACCELERATION, DISABLE_ACCELERATION userId based[m
+[32m+[m[32m    - [x] Cancel ADVANCE loop on unmount[m
+[32m+[m[32m    - [x] Disable acceleration on line drop[m
+[32m+[m[32m    - [x] ADVANCE action for current user[m
+[32m+[m[32m    - [x] Remove START/STOP actions[m
+[32m+[m[32m  - [x] Clear onboarding screens (postpone UI this time until game mechanics are confirmed)[m
+[32m+[m[32m  - [x] Update fixtures and tests[m
+[32m+[m[32m  - [x] Add 2nd player[m
+[32m+[m[32m    - [x] Start game when both players are ready[m
+[32m+[m[32m    - [x] Render other player's grid in the background[m
+[32m+[m[32m- [x] Create server MVP database[m
+[32m+[m[32m  - [x] Split client logic between starting or joining a game[m
+[32m+[m[32m- [x] Rename state.game to state.curGame[m
+[32m+[m[32m- [x] Add blocks to other player when clearing lines[m
+[32m+[m[32m- [x] Bring back "falling" block transition when lines are cleared[m
+[32m+[m[32m- [x] Transitions when clearing lines[m
+[32m+[m[32m  - [x] Cleared lines should go down (not instantly disappear)[m
+[32m+[m[32m  - [x] Lines from enemy should come up (not instantly appear)[m
+[32m+[m[32m  - [x] getNextCellId(gameState) abstraction[m
+[32m+[m[32m- [x] Fix concomitant line clearing between players[m
+[32m+[m[32m  - [x] Fix multiplayer test case: Clearing lines that aren't bottom ones[m
+[32m+[m[32m- [x] Expand memory db to multi games[m
+[32m+[m[32m- [x] Green/red wall flash when clearing lines (own vs enemy)[m
+[32m+[m[32m- [x] Earthquake effect when clearing lines[m
+[32m+[m[32m- [x] Make enemy grid visible on Firefox[m
+[32m+[m[32m- [x] Add hidden keyboard shortcut for stopping game[m
+[32m+[m[32m- [x] Clean up server scripts (Keep server with client together in prod, separate in dev)[m
+[32m+[m[32m- [x] [WORKING PROTOTYPE][m
+[32m+[m[32m- [x] Handle wrong game ID with 404[m
+[32m+[m[32m- [x] Create server-side user sessions[m
+[32m+[m[32m- [x] Read game (Redux) state from server side in Page.getInitialProps[m
+[32m+[m[32m- [x] Use HTTP request instead of socket event to create game[m
+[32m+[m[32m- [x] Load entire game state on load[m
+[32m+[m[32m- [x] Don't join game if 2 players are already in[m
+[32m+[m[32m- [x] Create join/:id route[m
+[32m+[m[32m- [x] Turn sessionId, userId & gameId numbers into hashes[m
+[32m+[m[32m- [x] Grayscale loading state until JS is loaded[m
+[32m+[m[32m- [x] Subscribe to game events on game page, once JS is loaded[m
+[32m+[m[32m- [x] Continue game after hard refresh[m
+[32m+[m[32m- [x] Add fixtures for all components[m
+[32m+[m[32m- [x] Add disabled state to buttons (get rid of early exists in handlers)[m
+[32m+[m[32m- [x] Create "Invite or play" screen[m
+[32m+[m[32m- [x] Create "Game full" screen[m
+[32m+[m[32m- [x] Create "Join game" screen[m
+[32m+[m[32m- [x] Create "Get ready" screen[m
+[32m+[m[32m- [x] Create "Waiting for other" screen[m
+[32m+[m[32m- [x] Create "Game over" screen[m
+[32m+[m[32m  - [x] Allow players to restart once game is over[m
+[32m+[m[32m- [x] Different layouts per device type/orientation[m
+[32m+[m[32m  - [x] No controls on desktop[m
+[32m+[m[32m- [x] Drop Tetromino on SPACE key[m
+[32m+[m[32m- [x] Style "Auth" screen[m
+[32m+[m[32m  - [x] When joining[m
+[32m+[m[32m  - [x] When creating[m
+[32m+[m[32m  - [x] Restrict name length[m
+[32m+[m[32m- [x] Reuse old public assets[m
+[32m+[m[32m  - [x] Add meta tags from old index.html[m
+[32m+[m[32m- [x] Style GamePanel[m
+[32m+[m[32m  - [x] Show both players' score in game panel[m
+[32m+[m[32m  - [x] Show player READY state[m
+[32m+[m[32m  - [x] New Flatris logo[m
+[32m+[m[32m  - [x] Humanize numbers over 1K[m
+[32m+[m[32m  - [x] Show lines instead of "wins" for single player[m
+[32m+[m[32m  - [x] Make "2P insert coin" clickable[m
+[32m+[m[32m- [x] Add global score (how many games each player won)[m
+[32m+[m[32m- [x] Add ability to PING other player[m
+[32m+[m[32m- [x] Allow users to just watch[m
+[32m+[m[32m- [x] Onboarding screen[m
+[32m+[m[32m  - [x] Left, right, up, down & space keys for desktop[m
+[32m+[m[32m  - [x] Point to controls[m
+[32m+[m[32m  - [x] Explain Flatris invention: line transferring[m
+[32m+[m[32m- [x] [ALPHA TESTING] feedback[m
+[32m+[m[32m  - [x] Disable in-game auth after entering 1st time[m
+[32m+[m[32m  - [x] Fade in game screens[m
+[32m+[m[32m  - [x] Generate new Tetromino random sequence per game turn[m
+[32m+[m[32m  - [x] Improve ending UI: Add WON green badge under player name[m
+[32m+[m[32m    - [x] Regression: Change "WON" badge to not block user score[m
+[32m+[m[32m- [x] Encourage players to play "best x out of y"[m
+[32m+[m[32m- [x] Disable controls when user isn't playing[m
+[32m+[m[32m- [x] Side controls on landscape mobile[m
+[32m+[m[32m  - [x] Extract portrait controls out of FlatrisGame[m
+[32m+[m[32m- [x] Don't request user auth when game is full (allow guests to watch)[m
+[32m+[m[32m- [x] Add copy to clipboard btn to "Invite or play" screen[m
+[32m+[m[32m  - [x] Show share button when clicking on "2P insert coin"[m
+[32m+[m[32m- [x] [BEAUTIFUL MVP][m
+[32m+[m[32m- [x] Ensure action consistency[m
+[32m+[m[32m  - [x] Create action backfill if user has old state and new actions[m
+[32m+[m[32m    - [x] Create action.id, action.prevId and game.player.lastActionId[m
+[32m+[m[32m    - [x] Store actions on the server[m
+[32m+[m[32m    - [x] Create backfill operation[m
+[32m+[m[32m- [x] UX: Disable Auth buttons while performing IO[m
+[32m+[m[32m- [x] UX: Disable buttons while JS is loading[m
+[32m+[m[32m  - [x] 2P Insert Coin in GamePanel[m
+[32m+[m[32m  - [x] screens/Auth name field[m
+[32m+[m[32m  - [x] screens/GameFull Watch[m
+[32m+[m[32m  - [x] screens/GameOver Again[m
+[32m+[m[32m  - [x] screens/GetReady Ready[m
+[32m+[m[32m  - [x] screens/JoinGame Watch and Join[m
+[32m+[m[32m  - [x] screens/NewGame Play and Copy[m
+[32m+[m[32m  - [x] screens/WaitingForOther Ping[m
+[32m+[m[32m- [x] Add pause & end game state for solo players with invite screen[m
+[32m+[m[32m- [x] Index page[m
+[32m+[m[32m  - [x] Create reduxState.games[m
+[32m+[m[32m  - [x] List all games[m
+[32m+[m[32m  - [x] Beautiful grid[m
+[32m+[m[32m  - [x] Animating games[m
+[32m+[m[32m  - [x] Strip game effects when going back to index page[m
+[32m+[m[32m  - [x] Push new games to dashboard[m
+[32m+[m[32m  - [x] Remove inactive games[m
+[32m+[m[32m    - [x] Mark inactive after 30 seconds[m
+[32m+[m[32m    - [x] Remove expired after 15 minutes[m
+[32m+[m[32m    - [x] Redirect to dashboard from expired game page[m
+[32m+[m[32m  - [x] Style[m
+[32m+[m[32m    - [x] Style NEW GAME button[m
+[32m+[m[32m    - [x] Add Flatris header[m
+[32m+[m[32m    - [x] Show blank state when no active games exist[m
+[32m+[m[32m    - [x] Fade in fade out transition game previews[m
+[32m+[m[32m    - [x] Highlight already joined games[m
+[32m+[m[32m- [x] BUG: Broadcast new game to `global` (without requiring an action)[m
+[32m+[m[32m- [x] BUG: Reset losses when 2nd player joins[m
+[32m+[m[32m- [x] Minimize network communication: Don't send noop actions[m
+[32m+[m[32m- [x] Throttle key down events[m
+[32m+[m[32m- [x] Profile browser performance (detect unnecessary renders)[m
+[32m+[m[32m- [x] Redesign onboarding[m
+[32m+[m[32m  - [x] Screen 1: Game intro[m
+[32m+[m[32m  - [x] Screen 2: Multiplayer game[m
+[32m+[m[32m  - [x] Screen 3: Line transferring[m
+[32m+[m[32m  - [x] Screen 4: Controls[m
+[32m+[m[32m- [x] Custom 404 page[m
+[32m+[m[32m- [x] Error page (via componentDidCatch)[m
+[32m+[m[32m- [x] Add empty game shell to Dashboard blank state[m
+[32m+[m[32m- [x] Link to Github[m
+[32m+[m[32m- [x] Game footer[m
+[32m+[m[32m- [x] Disable active Tetromino movement when game over (via mobile buttons)[m
+[32m+[m[32m- [x] [1.0][m
+[32m+[m[32m  - [x] Merge to master[m
+[32m+[m[32m  - [x] Rollbar server[m
+[32m+[m[32m  - [x] Rollbar client[m
+[32m+[m[32m  - [x] https://flatris.space[m
+[32m+[m[32m- [x] Embed Teko font in JS bundle[m
+[32m+[m[32m- [x] Record stats[m
+[32m+[m[32m  - [x] Store in Firebase (users, games)[m
+[32m+[m[32m  - [x] Count Turns and lines[m
+[32m+[m[32m  - [x] Count actions (left, right, accelerate, rotate)[m
+[32m+[m[32m  - [x] Count time[m
+[32m+[m[32m- [x] BUG: Gracefully invalidate session after re-deploy[m
+[32m+[m[32m- [x] Sync game after player disconnect[m
+[32m+[m[32m- [x] Real time stats page[m
+[32m+[m[32m- [x] [2.0][m
+[32m+[m[32m  - [x] Share on HN, PH, Reddit, etc[m
+[32m+[m[32m- [ ] Fix: Polyfill Set/Map https://reactjs.org/docs/javascript-environment-requirements.html[m
+[32m+[m[32m- [ ] Increase speed logarithmically (game currently ends too abruptly)[m
+[32m+[m[32m- [ ] "Paused" state for solo players (useful in dashboard to see if person paused or disappeared)[m
+[32m+[m[32m  - [ ] How about "idle" state?[m
+[32m+[m[32m- [ ] Ask for permission to join game[m
+[32m+[m[32m  - [ ] "Waiting for permission..." screen[m
+[32m+[m[32m  - [ ] "Allow player to join?" screen[m
+[32m+[m[32m  - [ ] "Denied" screen[m
+[32m+[m[32m- [ ] End of game screen[m
+[32m+[m
+[32m+[m[32mBACKLOG[m
+[32m+[m
+[32m+[m[32m- [ ] Back/home button in end game screen[m
+[32m+[m[32m- [ ] Allow watcher to select current player[m
+[32m+[m[32m  - [ ] Show current player visually[m
+[32m+[m[32m- [ ] Don't show onboarding after every deploy[m
+[32m+[m[32m- [ ] Freeze game on player disconnect[m
+[32m+[m[32m- [ ] Create drop shadow from active Tetromino[m
+[32m+[m[32m- [ ] Draw game status[m
+[32m+[m[32m- [ ] Zoom in animation when opening game from dashboard[m
+[32m+[m[32m- [ ] Algorithm for dispatching bundled actions at time interval[m
+[32m+[m[32m- [ ] Sounds[m
+[32m+[m
+[32m+[m[32mPERF[m
+[32m+[m
+[32m+[m[32m- [ ] Separate client from server (and run multiple instances of client)[m
+[32m+[m[32m- [ ] Minimize state footprint[m
+[32m+[m[32m- [ ] Batch dashboard actions[m
+[32m+[m
+[32m+[m[32mCHORES[m
+[32m+[m
+[32m+[m[32m- [x] Upgrade to Babel7[m
+[32m+[m[32m- [ ] Extract ReduxActions Cosmos proxy[m
+[32m+[m
+[32m+[m[32mUX[m
+[32m+[m
+[32m+[m[32m- [ ] Reconnect when focusing idle tab (https://github.com/socketio/socket.io-client/issues/1067)[m
+[1mdiff --git a/babel.config.js b/babel.config.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e1bcb75[m
+[1m--- /dev/null[m
+[1m+++ b/babel.config.js[m
+[36m@@ -0,0 +1,13 @@[m
+[32m+[m[32mconst path = require('path');[m
+[32m+[m
+[32m+[m[32mconst alias = {[m
+[32m+[m[32m  shared: path.join(__dirname, 'shared')[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mmodule.exports = {[m
+[32m+[m[32m  presets: [[m
+[32m+[m[32m    ['next/babel', { 'preset-env': { modules: 'commonjs' } }],[m
+[32m+[m[32m    '@babel/preset-flow'[m
+[32m+[m[32m  ],[m
+[32m+[m[32m  plugins: [['module-resolver', { alias }]][m
+[32m+[m[32m};[m
+[1mdiff --git a/docker-compose.yaml b/docker-compose.yaml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..05bebcf[m
+[1m--- /dev/null[m
+[1m+++ b/docker-compose.yaml[m
+[36m@@ -0,0 +1,7 @@[m
+[32m+[m[32mversion: "3"[m
+[32m+[m
+[32m+[m[32mservices:[m
+[32m+[m[32m  flatris_v3_copmpose:[m
+[32m+[m[32m    build: .[m
+[32m+[m[32m    ports:[m
+[32m+[m[32m    - "9000:3000"[m
+[1mdiff --git a/dockerfile b/dockerfile[m
+[1mnew file mode 100644[m
+[1mindex 0000000..38ab007[m
+[1m--- /dev/null[m
+[1m+++ b/dockerfile[m
+[36m@@ -0,0 +1,17 @@[m
+[32m+[m[32mFROM node[m
+[32m+[m
+[32m+[m[32mRUN mkdir /app[m
+[32m+[m[32mWORKDIR /app[m
+[32m+[m
+[32m+[m
+[32m+[m[32mCOPY package.json /app[m
+[32m+[m[32mRUN yarn install --no-lockfile[m[41m [m
+[32m+[m
+[32m+[m[32mCOPY . /app[m
+[32m+[m[32mRUN yarn test[m
+[32m+[m[32mRUN yarn build[m
+[32m+[m
+[32m+[m[32mCMD yarn start[m
+[32m+[m[32mEXPOSE 3000[m
+[32m+[m
+[32m+[m
+[1mdiff --git a/flatris.png b/flatris.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f2394eb[m
+Binary files /dev/null and b/flatris.png differ
+[1mdiff --git a/flow-typed/npm/express_v4.16.x.js b/flow-typed/npm/express_v4.16.x.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a1e2737[m
+[1m--- /dev/null[m
+[1m+++ b/flow-typed/npm/express_v4.16.x.js[m
+[36m@@ -0,0 +1,304 @@[m
+[32m+[m[32m// flow-typed signature: 207bac286d971cad7615b09aa20d4acf[m
+[32m+[m[32m// flow-typed version: bb849ae672/express_v4.16.x/flow_>=v0.32.x[m
+[32m+[m
+[32m+[m[32mimport * as http from "http";[m
+[32m+[m[32mimport type { Socket } from "net";[m
+[32m+[m
+[32m+[m[32mdeclare type express$RouterOptions = {[m
+[32m+[m[32m  caseSensitive?: boolean,[m
+[32m+[m[32m  mergeParams?: boolean,[m
+[32m+[m[32m  strict?: boolean[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mdeclare class express$RequestResponseBase {[m
+[32m+[m[32m  app: express$Application;[m
+[32m+[m[32m  get(field: string): string | void;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mdeclare type express$RequestParams = {[m
+[32m+[m[32m  [param: string]: string[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mdeclare class express$Request extends http$IncomingMessage mixins express$RequestResponseBase {[m
+[32m+[m[32m  baseUrl: string;[m
+[32m+[m[32m  body: mixed;[m
+[32m+[m[32m  cookies: { [cookie: string]: string };[m
+[32m+[m[32m  connection: Socket;[m
+[32m+[m[32m  fresh: boolean;[m
+[32m+[m[32m  hostname: string;[m
+[32m+[m[32m  ip: string;[m
+[32m+[m[32m  ips: Array<string>;[m
+[32m+[m[32m  method: string;[m
+[32m+[m[32m  originalUrl: string;[m
+[32m+[m[32m  params: express$RequestParams;[m
+[32m+[m[32m  path: string;[m
+[32m+[m[32m  protocol: "https" | "http";[m
+[32m+[m[32m  query: { [name: string]: string | Array<string> };[m
+[32m+[m[32m  route: string;[m
+[32m+[m[32m  secure: boolean;[m
+[32m+[m[32m  signedCookies: { [signedCookie: string]: string };[m
+[32m+[m[32m  stale: boolean;[m
+[32m+[m[32m  subdomains: Array<string>;[m
+[32m+[m[32m  xhr: boolean;[m
+[32m+[m[32m  accepts(types: string): string | false;[m
+[32m+[m[32m  accepts(types: Array<string>): string | false;[m
+[32m+[m[32m  acceptsCharsets(...charsets: Array<string>): string | false;[m
+[32m+[m[32m  acceptsEncodings(...encoding: Array<string>): string | false;[m
+[32m+[m[32m  acceptsLanguages(...lang: Array<string>): string | false;[m
+[32m+[m[32m  header(field: string): string | void;[m
+[32m+[m[32m  is(type: string): boolean;[m
+[32m+[m[32m  param(name: string, defaultValue?: string): string | void;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mdeclare type express$CookieOptions = {[m
+[32m+[m[32m  domain?: string,[m
+[32m+[m[32m  encode?: (value: string) => string,[m
+[32m+[m[32m  expires?: Date,[m
+[32m+[m[32m  httpOnly?: boolean,[m
+[32m+[m[32m  maxAge?: number,[m
+[32m+[m[32m  path?: string,[m
+[32m+[m[32m  secure?: boolean,[m
+[32m+[m[32m  signed?: boolean[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mdeclare type express$Path = string | RegExp;[m
+[32m+[m
+[32m+[m[32mdeclare type express$RenderCallback = ([m
+[32m+[m[32m  err: Error | null,[m
+[32m+[m[32m  html?: string[m
+[32m+[m[32m) => mixed;[m
+[32m+[m
+[32m+[m[32mdeclare type express$SendFileOptions = {[m
+[32m+[m[32m  maxAge?: number,[m
+[32m+[m[32m  root?: string,[m
+[32m+[m[32m  lastModified?: boolean,[m
+[32m+[m[32m  headers?: { [name: string]: string },[m
+[32m+[m[32m  dotfiles?: "allow" | "deny" | "ignore"[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mdeclare class express$Response extends http$ServerResponse mixins express$RequestResponseBase {[m
+[32m+[m[32m  headersSent: boolean;[m
+[32m+[m[32m  locals: { [name: string]: mixed };[m
+[32m+[m[32m  append(field: string, value?: string): this;[m
+[32m+[m[32m  attachment(filename?: string): this;[m
+[32m+[m[32m  cookie(name: string, value: string, options?: express$CookieOptions): this;[m
+[32m+[m[32m  clearCookie(name: string, options?: express$CookieOptions): this;[m
+[32m+[m[32m  download([m
+[32m+[m[32m    path: string,[m
+[32m+[m[32m    filename?: string,[m
+[32m+[m[32m    callback?: (err?: ?Error) => void[m
+[32m+[m[32m  ): this;[m
+[32m+[m[32m  format(typesObject: { [type: string]: Function }): this;[m
+[32m+[m[32m  json(body?: mixed): this;[m
+[32m+[m[32m  jsonp(body?: mixed): this;[m
+[32m+[m[32m  links(links: { [name: string]: string }): this;[m
+[32m+[m[32m  location(path: string): this;[m
+[32m+[m[32m  redirect(url: string, ...args: Array<void>): this;[m
+[32m+[m[32m  redirect(status: number, url: string, ...args: Array<void>): this;[m
+[32m+[m[32m  render([m
+[32m+[m[32m    view: string,[m
+[32m+[m[32m    locals?: { [name: string]: mixed },[m
+[32m+[m[32m    callback?: express$RenderCallback[m
+[32m+[m[32m  ): this;[m
+[32m+[m[32m  send(body?: mixed): this;[m
+[32m+[m[32m  sendFile([m
+[32m+[m[32m    path: string,[m
+[32m+[m[32m    options?: express$SendFileOptions,[m
+[32m+[m[32m    callback?: (err?: ?Error) => mixed[m
+[32m+[m[32m  ): this;[m
+[32m+[m[32m  sendStatus(statusCode: number): this;[m
+[32m+[m[32m  header(field: string, value?: string): this;[m
+[32m+[m[32m  header(headers: { [name: string]: string }): this;[m
+[32m+[m[32m  set(field: string, value?: string | string[]): this;[m
+[32m+[m[32m  set(headers: { [name: string]: string }): this;[m
+[32m+[m[32m  status(statusCode: number): this;[m
+[32m+[m[32m  type(type: string): this;[m
+[32m+[m[32m  vary(field: string): this;[m
+[32m+[m[32m  req: express$Request;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mdeclare type express$NextFunction = (err?: ?Error | "route") => mixed;[m
+[32m+[m[32mdeclare type express$Middleware =[m
+[32m+[m[32m  | (([m
+[32m+[m[32m      req: $Subtype<express$Request>,[m
+[32m+[m[32m      res: express$Response,[m
+[32m+[m[32m      next: express$NextFunction[m
+[32m+[m[32m    ) => mixed)[m
+[32m+[m[32m  | (([m
+[32m+[m[32m      error: Error,[m
+[32m+[m[32m      req: $Subtype<express$Request>,[m
+[32m+[m[32m      res: express$Response,[m
+[32m+[m[32m      next: express$NextFunction[m
+[32m+[m[32m    ) => mixed);[m
+[32m+[m[32mdeclare interface express$RouteMethodType<T> {[m
+[32m+[m[32m  (middleware: express$Middleware): T;[m
+[32m+[m[32m  (...middleware: Array<express$Middleware>): T;[m
+[32m+[m[32m  ([m
+[32m+[m[32m    path: express$Path | express$Path[],[m
+[32m+[m[32m    ...middleware: Array<express$Middleware>[m
+[32m+[m[32m  ): T;[m
+[32m+[m[32m}[m
+[32m+[m[32mdeclare class express$Route {[m
+[32m+[m[32m  all: express$RouteMethodType<this>;[m
+[32m+[m[32m  get: express$RouteMethodType<this>;[m
+[32m+[m[32m  post: express$RouteMethodType<this>;[m
+[32m+[m[32m  put: express$RouteMethodType<this>;[m
+[32m+[m[32m  head: express$RouteMethodType<this>;[m
+[32m+[m[32m  delete: express$RouteMethodType<this>;[m
+[32m+[m[32m  options: express$RouteMethodType<this>;[m
+[32m+[m[32m  trace: express$RouteMethodType<this>;[m
+[32m+[m[32m  copy: express$RouteMethodType<this>;[m
+[32m+[m[32m  lock: express$RouteMethodType<this>;[m
+[32m+[m[32m  mkcol: express$RouteMethodType<this>;[m
+[32m+[m[32m  move: express$RouteMethodType<this>;[m
+[32m+[m[32m  purge: express$RouteMethodType<this>;[m
+[32m+[m[32m  propfind: express$RouteMethodType<this>;[m
+[32m+[m[32m  proppatch: express$RouteMethodType<this>;[m
+[32m+[m[32m  unlock: express$RouteMethodType<this>;[m
+[32m+[m[32m  report: express$RouteMethodType<this>;[m
+[32m+[m[32m  mkactivity: express$RouteMethodType<this>;[m
+[32m+[m[32m  checkout: express$RouteMethodType<this>;[m
+[32m+[m[32m  merge: express$RouteMethodType<this>;[m
+[32m+[m
+[32m+[m[32m  // @TODO Missing 'm-search' but get flow illegal name error.[m
+[32m+[m
+[32m+[m[32m  notify: express$RouteMethodType<this>;[m
+[32m+[m[32m  subscribe: express$RouteMethodType<this>;[m
+[32m+[m[32m  unsubscribe: express$RouteMethodType<this>;[m
+[32m+[m[32m  patch: express$RouteMethodType<this>;[m
+[32m+[m[32m  search: express$RouteMethodType<this>;[m
+[32m+[m[32m  connect: express$RouteMethodType<this>;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mdeclare class express$Router extends express$Route {[m
+[32m+[m[32m  constructor(options?: express$RouterOptions): void;[m
+[32m+[m[32m  route(path: string): express$Route;[m
+[32m+[m[32m  static (options?: express$RouterOptions): express$Router;[m
+[32m+[m[32m  use(middleware: express$Middleware): this;[m
+[32m+[m[32m  use(...middleware: Array<express$Middleware>): this;[m
+[32m+[m[32m  use([m
+[32m+[m[32m    path: express$Path | express$Path[],[m
+[32m+[m[32m    ...middleware: Array<express$Middleware>[m
+[32m+[m[32m  ): this;[m
+[32m+[m[32m  use(path: string, router: express$Router): this;[m
+[32m+[m[32m  handle([m
+[32m+[m[32m    req: http$IncomingMessage,[m
+[32m+[m[32m    res: http$ServerResponse,[m
+[32m+[m[32m    next: express$NextFunction[m
+[32m+[m[32m  ): void;[m
+[32m+[m[32m  param([m
+[32m+[m[32m    param: string,[m
+[32m+[m[32m    callback: ([m
+[32m+[m[32m      req: $Subtype<express$Request>,[m
+[32m+[m[32m      res: express$Response,[m
+[32m+[m[32m      next: express$NextFunction,[m
+[32m+[m[32m      id: string[m
+[32m+[m[32m    ) => mixed[m
+[32m+[m[32m  ): void;[m
+[32m+[m[32m  ([m
+[32m+[m[32m    req: http$IncomingMessage,[m
+[32m+[m[32m    res: http$ServerResponse,[m
+[32m+[m[32m    next?: ?express$NextFunction[m
+[32m+[m[32m  ): void;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/*[m
+[32m+[m[32mWith flow-bin ^0.59, express app.listen() is deemed to return any and fails flow type coverage.[m
+[32m+[m[32mWhich is ironic because https://github.com/facebook/flow/blob/master/Changelog.md#misc-2 (release notes for 0.59)[m
+[32m+[m[32msays "Improves typings for Node.js HTTP server listen() function."  See that?  IMPROVES![m
+[32m+[m[32mTo work around this issue, we changed Server to ?Server here, so that our invocations of express.listen() will[m
+[32m+[m[32mnot be deemed to lack type coverage.[m
+[32m+[m[32m*/[m
+[32m+[m
+[32m+[m[32mdeclare class express$Application extends express$Router mixins events$EventEmitter {[m
+[32m+[m[32m  constructor(): void;[m
+[32m+[m[32m  locals: { [name: string]: mixed };[m
+[32m+[m[32m  mountpath: string;[m
+[32m+[m[32m  listen([m
+[32m+[m[32m    port: number,[m
+[32m+[m[32m    hostname?: string,[m
+[32m+[m[32m    backlog?: number,[m
+[32m+[m[32m    callback?: (err?: ?Error) => mixed[m
+[32m+[m[32m  ): ?http.Server;[m
+[32m+[m[32m  listen([m
+[32m+[m[32m    port: number,[m
+[32m+[m[32m    hostname?: string,[m
+[32m+[m[32m    callback?: (err?: ?Error) => mixed[m
+[32m+[m[32m  ): ?http.Server;[m
+[32m+[m[32m  listen(port: number, callback?: (err?: ?Error) => mixed): ?http.Server;[m
+[32m+[m[32m  listen(path: string, callback?: (err?: ?Error) => mixed): ?http.Server;[m
+[32m+[m[32m  listen(handle: Object, callback?: (err?: ?Error) => mixed): ?http.Server;[m
+[32m+[m[32m  disable(name: string): void;[m
+[32m+[m[32m  disabled(name: string): boolean;[m
+[32m+[m[32m  enable(name: string): express$Application;[m
+[32m+[m[32m  enabled(name: string): boolean;[m
+[32m+[m[32m  engine(name: string, callback: Function): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Mixed will not be taken as a value option. Issue around using the GET http method name and the get for settings.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  //   get(name: string): mixed;[m
+[32m+[m[32m  set(name: string, value: mixed): mixed;[m
+[32m+[m[32m  render([m
+[32m+[m[32m    name: string,[m
+[32m+[m[32m    optionsOrFunction: { [name: string]: mixed },[m
+[32m+[m[32m    callback: express$RenderCallback[m
+[32m+[m[32m  ): void;[m
+[32m+[m[32m  handle([m
+[32m+[m[32m    req: http$IncomingMessage,[m
+[32m+[m[32m    res: http$ServerResponse,[m
+[32m+[m[32m    next?: ?express$NextFunction[m
+[32m+[m[32m  ): void;[m
+[32m+[m[32m  // callable signature is not inherited[m
+[32m+[m[32m  ([m
+[32m+[m[32m    req: http$IncomingMessage,[m
+[32m+[m[32m    res: http$ServerResponse,[m
+[32m+[m[32m    next?: ?express$NextFunction[m
+[32m+[m[32m  ): void;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mdeclare type JsonOptions = {[m
+[32m+[m[32m  inflate?: boolean,[m
+[32m+[m[32m  limit?: string | number,[m
+[32m+[m[32m  reviver?: (key: string, value: mixed) => mixed,[m
+[32m+[m[32m  strict?: boolean,[m
+[32m+[m[32m  type?: string | Array<string> | ((req: express$Request) => boolean),[m
+[32m+[m[32m  verify?: ([m
+[32m+[m[32m    req: express$Request,[m
+[32m+[m[32m    res: express$Response,[m
+[32m+[m[32m    buf: Buffer,[m
+[32m+[m[32m    encoding: string[m
+[32m+[m[32m  ) => mixed[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mdeclare type express$UrlEncodedOptions = {[m
+[32m+[m[32m  extended?: boolean,[m
+[32m+[m[32m  inflate?: boolean,[m
+[32m+[m[32m  limit?: string | number,[m
+[32m+[m[32m  parameterLimit?: number,[m
+[32m+[m[32m  type?: string | Array<string> | ((req: express$Request) => boolean),[m
+[32m+[m[32m  verify?: ([m
+[32m+[m[32m    req: express$Request,[m
+[32m+[m[32m    res: express$Response,[m
+[32m+[m[32m    buf: Buffer,[m
+[32m+[m[32m    encoding: string[m
+[32m+[m[32m  ) => mixed,[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mdeclare module "express" {[m
+[32m+[m[32m  declare export type RouterOptions = express$RouterOptions;[m
+[32m+[m[32m  declare export type CookieOptions = express$CookieOptions;[m
+[32m+[m[32m  declare export type Middleware = express$Middleware;[m
+[32m+[m[32m  declare export type NextFunction = express$NextFunction;[m
+[32m+[m[32m  declare export type RequestParams = express$RequestParams;[m
+[32m+[m[32m  declare export type $Response = express$Response;[m
+[32m+[m[32m  declare export type $Request = express$Request;[m
+[32m+[m[32m  declare export type $Application = express$Application;[m
+[32m+[m
+[32m+[m[32m  declare module.exports: {[m
+[32m+[m[32m    (): express$Application, // If you try to call like a function, it will use this signature[m
+[32m+[m[32m    json: (opts: ?JsonOptions) => express$Middleware,[m
+[32m+[m[32m    static: (root: string, options?: Object) => express$Middleware, // `static` property on the function[m
+[32m+[m[32m    Router: typeof express$Router, // `Router` property on the function[m
+[32m+[m[32m    urlencoded: (opts: ?express$UrlEncodedOptions) => express$Middleware,[m
+[32m+[m[32m  };[m
+[32m+[m[32m}[m
+[1mdiff --git a/flow-typed/npm/jest_v23.x.x.js b/flow-typed/npm/jest_v23.x.x.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..95835f5[m
+[1m--- /dev/null[m
+[1m+++ b/flow-typed/npm/jest_v23.x.x.js[m
+[36m@@ -0,0 +1,1155 @@[m
+[32m+[m[32m// flow-typed signature: 78c200acffbcc16bba9478f5396c3a00[m
+[32m+[m[32m// flow-typed version: b2980740dd/jest_v23.x.x/flow_>=v0.39.x[m
+[32m+[m
+[32m+[m[32mtype JestMockFn<TArguments: $ReadOnlyArray<*>, TReturn> = {[m
+[32m+[m[32m  (...args: TArguments): TReturn,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * An object for introspecting mock calls[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mock: {[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * An array that represents all calls that have been made into this mock[m
+[32m+[m[32m     * function. Each call is represented by an array of arguments that were[m
+[32m+[m[32m     * passed during the call.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    calls: Array<TArguments>,[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * An array that contains all the object instances that have been[m
+[32m+[m[32m     * instantiated from this mock function.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    instances: Array<TReturn>,[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * An array that contains all the object results that have been[m
+[32m+[m[32m     * returned by this mock function call[m
+[32m+[m[32m     */[m
+[32m+[m[32m    results: Array<{ isThrow: boolean, value: TReturn }>[m
+[32m+[m[32m  },[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Resets all information stored in the mockFn.mock.calls and[m
+[32m+[m[32m   * mockFn.mock.instances arrays. Often this is useful when you want to clean[m
+[32m+[m[32m   * up a mock's usage data between two assertions.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockClear(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Resets all information stored in the mock. This is useful when you want to[m
+[32m+[m[32m   * completely restore a mock back to its initial state.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockReset(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Removes the mock and restores the initial implementation. This is useful[m
+[32m+[m[32m   * when you want to mock functions in certain test cases and restore the[m
+[32m+[m[32m   * original implementation in others. Beware that mockFn.mockRestore only[m
+[32m+[m[32m   * works when mock was created with jest.spyOn. Thus you have to take care of[m
+[32m+[m[32m   * restoration yourself when manually assigning jest.fn().[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockRestore(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Accepts a function that should be used as the implementation of the mock.[m
+[32m+[m[32m   * The mock itself will still record all calls that go into and instances[m
+[32m+[m[32m   * that come from itself -- the only difference is that the implementation[m
+[32m+[m[32m   * will also be executed when the mock is called.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockImplementation([m
+[32m+[m[32m    fn: (...args: TArguments) => TReturn[m
+[32m+[m[32m  ): JestMockFn<TArguments, TReturn>,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Accepts a function that will be used as an implementation of the mock for[m
+[32m+[m[32m   * one call to the mocked function. Can be chained so that multiple function[m
+[32m+[m[32m   * calls produce different results.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockImplementationOnce([m
+[32m+[m[32m    fn: (...args: TArguments) => TReturn[m
+[32m+[m[32m  ): JestMockFn<TArguments, TReturn>,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Accepts a string to use in test result output in place of "jest.fn()" to[m
+[32m+[m[32m   * indicate which mock function is being referenced.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockName(name: string): JestMockFn<TArguments, TReturn>,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Just a simple sugar function for returning `this`[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockReturnThis(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Accepts a value that will be returned whenever the mock function is called.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockReturnValue(value: TReturn): JestMockFn<TArguments, TReturn>,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Sugar for only returning a value once inside your mock[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockReturnValueOnce(value: TReturn): JestMockFn<TArguments, TReturn>,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Sugar for jest.fn().mockImplementation(() => Promise.resolve(value))[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockResolvedValue(value: TReturn): JestMockFn<TArguments, Promise<TReturn>>,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Sugar for jest.fn().mockImplementationOnce(() => Promise.resolve(value))[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockResolvedValueOnce(value: TReturn): JestMockFn<TArguments, Promise<TReturn>>,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Sugar for jest.fn().mockImplementation(() => Promise.reject(value))[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockRejectedValue(value: TReturn): JestMockFn<TArguments, Promise<any>>,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Sugar for jest.fn().mockImplementationOnce(() => Promise.reject(value))[m
+[32m+[m[32m   */[m
+[32m+[m[32m  mockRejectedValueOnce(value: TReturn): JestMockFn<TArguments, Promise<any>>[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mtype JestAsymmetricEqualityType = {[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * A custom Jasmine equality tester[m
+[32m+[m[32m   */[m
+[32m+[m[32m  asymmetricMatch(value: mixed): boolean[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mtype JestCallsType = {[m
+[32m+[m[32m  allArgs(): mixed,[m
+[32m+[m[32m  all(): mixed,[m
+[32m+[m[32m  any(): boolean,[m
+[32m+[m[32m  count(): number,[m
+[32m+[m[32m  first(): mixed,[m
+[32m+[m[32m  mostRecent(): mixed,[m
+[32m+[m[32m  reset(): void[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mtype JestClockType = {[m
+[32m+[m[32m  install(): void,[m
+[32m+[m[32m  mockDate(date: Date): void,[m
+[32m+[m[32m  tick(milliseconds?: number): void,[m
+[32m+[m[32m  uninstall(): void[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mtype JestMatcherResult = {[m
+[32m+[m[32m  message?: string | (() => string),[m
+[32m+[m[32m  pass: boolean[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mtype JestMatcher = (actual: any, expected: any) =>[m
+[32m+[m[32m  | JestMatcherResult[m
+[32m+[m[32m  | Promise<JestMatcherResult>;[m
+[32m+[m
+[32m+[m[32mtype JestPromiseType = {[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use rejects to unwrap the reason of a rejected promise so any other[m
+[32m+[m[32m   * matcher can be chained. If the promise is fulfilled the assertion fails.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  rejects: JestExpectType,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use resolves to unwrap the value of a fulfilled promise so any other[m
+[32m+[m[32m   * matcher can be chained. If the promise is rejected the assertion fails.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  resolves: JestExpectType[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32m/**[m
+[32m+[m[32m * Jest allows functions and classes to be used as test names in test() and[m
+[32m+[m[32m * describe()[m
+[32m+[m[32m */[m
+[32m+[m[32mtype JestTestName = string | Function;[m
+[32m+[m
+[32m+[m[32m/**[m
+[32m+[m[32m *  Plugin: jest-styled-components[m
+[32m+[m[32m */[m
+[32m+[m
+[32m+[m[32mtype JestStyledComponentsMatcherValue =[m
+[32m+[m[32m  | string[m
+[32m+[m[32m  | JestAsymmetricEqualityType[m
+[32m+[m[32m  | RegExp[m
+[32m+[m[32m  | typeof undefined;[m
+[32m+[m
+[32m+[m[32mtype JestStyledComponentsMatcherOptions = {[m
+[32m+[m[32m  media?: string;[m
+[32m+[m[32m  modifier?: string;[m
+[32m+[m[32m  supports?: string;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mtype JestStyledComponentsMatchersType = {[m
+[32m+[m[32m  toHaveStyleRule([m
+[32m+[m[32m    property: string,[m
+[32m+[m[32m    value: JestStyledComponentsMatcherValue,[m
+[32m+[m[32m    options?: JestStyledComponentsMatcherOptions[m
+[32m+[m[32m  ): void,[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32m/**[m
+[32m+[m[32m *  Plugin: jest-enzyme[m
+[32m+[m[32m */[m
+[32m+[m[32mtype EnzymeMatchersType = {[m
+[32m+[m[32m  // 5.x[m
+[32m+[m[32m  toBeEmpty(): void,[m
+[32m+[m[32m  toBePresent(): void,[m
+[32m+[m[32m  // 6.x[m
+[32m+[m[32m  toBeChecked(): void,[m
+[32m+[m[32m  toBeDisabled(): void,[m
+[32m+[m[32m  toBeEmptyRender(): void,[m
+[32m+[m[32m  toContainMatchingElement(selector: string): void;[m
+[32m+[m[32m  toContainMatchingElements(n: number, selector: string): void;[m
+[32m+[m[32m  toContainExactlyOneMatchingElement(selector: string): void;[m
+[32m+[m[32m  toContainReact(element: React$Element<any>): void,[m
+[32m+[m[32m  toExist(): void,[m
+[32m+[m[32m  toHaveClassName(className: string): void,[m
+[32m+[m[32m  toHaveHTML(html: string): void,[m
+[32m+[m[32m  toHaveProp: ((propKey: string, propValue?: any) => void) & ((props: Object) => void),[m
+[32m+[m[32m  toHaveRef(refName: string): void,[m
+[32m+[m[32m  toHaveState: ((stateKey: string, stateValue?: any) => void) & ((state: Object) => void),[m
+[32m+[m[32m  toHaveStyle: ((styleKey: string, styleValue?: any) => void) & ((style: Object) => void),[m
+[32m+[m[32m  toHaveTagName(tagName: string): void,[m
+[32m+[m[32m  toHaveText(text: string): void,[m
+[32m+[m[32m  toHaveValue(value: any): void,[m
+[32m+[m[32m  toIncludeText(text: string): void,[m
+[32m+[m[32m  toMatchElement([m
+[32m+[m[32m    element: React$Element<any>,[m
+[32m+[m[32m    options?: {| ignoreProps?: boolean, verbose?: boolean |},[m
+[32m+[m[32m  ): void,[m
+[32m+[m[32m  toMatchSelector(selector: string): void,[m
+[32m+[m[32m  // 7.x[m
+[32m+[m[32m  toHaveDisplayName(name: string): void,[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32m// DOM testing library extensions https://github.com/kentcdodds/dom-testing-library#custom-jest-matchers[m
+[32m+[m[32mtype DomTestingLibraryType = {[m
+[32m+[m[32m  toBeDisabled(): void,[m
+[32m+[m[32m  toBeEmpty(): void,[m
+[32m+[m[32m  toBeInTheDocument(): void,[m
+[32m+[m[32m  toBeVisible(): void,[m
+[32m+[m[32m  toContainElement(element: HTMLElement | null): void,[m
+[32m+[m[32m  toContainHTML(htmlText: string): void,[m
+[32m+[m[32m  toHaveAttribute(name: string, expectedValue?: string): void,[m
+[32m+[m[32m  toHaveClass(...classNames: string[]): void,[m
+[32m+[m[32m  toHaveFocus(): void,[m
+[32m+[m[32m  toHaveFormValues(expectedValues: { [name: string]: any }): void,[m
+[32m+[m[32m  toHaveStyle(css: string): void,[m
+[32m+[m[32m  toHaveTextContent(content: string | RegExp, options?: { normalizeWhitespace: boolean }): void,[m
+[32m+[m[32m  toBeInTheDOM(): void,[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32m// Jest JQuery Matchers: https://github.com/unindented/custom-jquery-matchers[m
+[32m+[m[32mtype JestJQueryMatchersType = {[m
+[32m+[m[32m  toExist(): void,[m
+[32m+[m[32m  toHaveLength(len: number): void,[m
+[32m+[m[32m  toHaveId(id: string): void,[m
+[32m+[m[32m  toHaveClass(className: string): void,[m
+[32m+[m[32m  toHaveTag(tag: string): void,[m
+[32m+[m[32m  toHaveAttr(key: string, val?: any): void,[m
+[32m+[m[32m  toHaveProp(key: string, val?: any): void,[m
+[32m+[m[32m  toHaveText(text: string | RegExp): void,[m
+[32m+[m[32m  toHaveData(key: string, val?: any): void,[m
+[32m+[m[32m  toHaveValue(val: any): void,[m
+[32m+[m[32m  toHaveCss(css: {[key: string]: any}): void,[m
+[32m+[m[32m  toBeChecked(): void,[m
+[32m+[m[32m  toBeDisabled(): void,[m
+[32m+[m[32m  toBeEmpty(): void,[m
+[32m+[m[32m  toBeHidden(): void,[m
+[32m+[m[32m  toBeSelected(): void,[m
+[32m+[m[32m  toBeVisible(): void,[m
+[32m+[m[32m  toBeFocused(): void,[m
+[32m+[m[32m  toBeInDom(): void,[m
+[32m+[m[32m  toBeMatchedBy(sel: string): void,[m
+[32m+[m[32m  toHaveDescendant(sel: string): void,[m
+[32m+[m[32m  toHaveDescendantWithText(sel: string, text: string | RegExp): void[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m
+[32m+[m[32m// Jest Extended Matchers: https://github.com/jest-community/jest-extended[m
+[32m+[m[32mtype JestExtendedMatchersType = {[m
+[32m+[m[32m  /**[m
+[32m+[m[32m     * Note: Currently unimplemented[m
+[32m+[m[32m     * Passing assertion[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {String} message[m
+[32m+[m[32m     */[m
+[32m+[m[32m  //  pass(message: string): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Note: Currently unimplemented[m
+[32m+[m[32m     * Failing assertion[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {String} message[m
+[32m+[m[32m     */[m
+[32m+[m[32m  //  fail(message: string): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use .toBeEmpty when checking if a String '', Array [] or Object {} is empty.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeEmpty(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use .toBeOneOf when checking if a value is a member of a given Array.[m
+[32m+[m[32m     * @param {Array.<*>} members[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeOneOf(members: any[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeNil` when checking a value is `null` or `undefined`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeNil(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toSatisfy` when you want to use a custom matcher by supplying a predicate function that returns a `Boolean`.[m
+[32m+[m[32m     * @param {Function} predicate[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toSatisfy(predicate: (n: any) => boolean): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeArray` when checking if a value is an `Array`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeArray(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeArrayOfSize` when checking if a value is an `Array` of size x.[m
+[32m+[m[32m     * @param {Number} x[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeArrayOfSize(x: number): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toIncludeAllMembers` when checking if an `Array` contains all of the same members of a given set.[m
+[32m+[m[32m     * @param {Array.<*>} members[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toIncludeAllMembers(members: any[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toIncludeAnyMembers` when checking if an `Array` contains any of the members of a given set.[m
+[32m+[m[32m     * @param {Array.<*>} members[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toIncludeAnyMembers(members: any[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toSatisfyAll` when you want to use a custom matcher by supplying a predicate function that returns a `Boolean` for all values in an array.[m
+[32m+[m[32m     * @param {Function} predicate[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toSatisfyAll(predicate: (n: any) => boolean): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeBoolean` when checking if a value is a `Boolean`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeBoolean(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeTrue` when checking a value is equal (===) to `true`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeTrue(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeFalse` when checking a value is equal (===) to `false`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeFalse(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use .toBeDate when checking if a value is a Date.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeDate(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeFunction` when checking if a value is a `Function`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeFunction(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toHaveBeenCalledBefore` when checking if a `Mock` was called before another `Mock`.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * Note: Required Jest version >22[m
+[32m+[m[32m     * Note: Your mock functions will have to be asynchronous to cause the timestamps inside of Jest to occur in a differentJS event loop, otherwise the mock timestamps will all be the same[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Mock} mock[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toHaveBeenCalledBefore(mock: JestMockFn<any, any>): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeNumber` when checking if a value is a `Number`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeNumber(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeNaN` when checking a value is `NaN`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeNaN(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeFinite` when checking if a value is a `Number`, not `NaN` or `Infinity`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeFinite(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBePositive` when checking if a value is a positive `Number`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBePositive(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeNegative` when checking if a value is a negative `Number`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeNegative(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeEven` when checking if a value is an even `Number`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeEven(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeOdd` when checking if a value is an odd `Number`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeOdd(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeWithin` when checking if a number is in between the given bounds of: start (inclusive) and end (exclusive).[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Number} start[m
+[32m+[m[32m     * @param {Number} end[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeWithin(start: number, end: number): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeObject` when checking if a value is an `Object`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeObject(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainKey` when checking if an object contains the provided key.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {String} key[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainKey(key: string): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainKeys` when checking if an object has all of the provided keys.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<String>} keys[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainKeys(keys: string[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainAllKeys` when checking if an object only contains all of the provided keys.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<String>} keys[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainAllKeys(keys: string[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainAnyKeys` when checking if an object contains at least one of the provided keys.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<String>} keys[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainAnyKeys(keys: string[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainValue` when checking if an object contains the provided value.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {*} value[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainValue(value: any): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainValues` when checking if an object contains all of the provided values.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<*>} values[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainValues(values: any[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainAllValues` when checking if an object only contains all of the provided values.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<*>} values[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainAllValues(values: any[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainAnyValues` when checking if an object contains at least one of the provided values.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<*>} values[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainAnyValues(values: any[]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainEntry` when checking if an object contains the provided entry.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<String, String>} entry[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainEntry(entry: [string, string]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainEntries` when checking if an object contains all of the provided entries.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<Array.<String, String>>} entries[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainEntries(entries: [string, string][]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainAllEntries` when checking if an object only contains all of the provided entries.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<Array.<String, String>>} entries[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainAllEntries(entries: [string, string][]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toContainAnyEntries` when checking if an object contains at least one of the provided entries.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<Array.<String, String>>} entries[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toContainAnyEntries(entries: [string, string][]): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeExtensible` when checking if an object is extensible.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeExtensible(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeFrozen` when checking if an object is frozen.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeFrozen(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeSealed` when checking if an object is sealed.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeSealed(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toBeString` when checking if a value is a `String`.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toBeString(): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toEqualCaseInsensitive` when checking if a string is equal (===) to another ignoring the casing of both strings.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {String} string[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toEqualCaseInsensitive(string: string): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toStartWith` when checking if a `String` starts with a given `String` prefix.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {String} prefix[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toStartWith(prefix: string): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toEndWith` when checking if a `String` ends with a given `String` suffix.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {String} suffix[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toEndWith(suffix: string): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toInclude` when checking if a `String` includes the given `String` substring.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {String} substring[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toInclude(substring: string): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toIncludeRepeated` when checking if a `String` includes the given `String` substring the correct number of times.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {String} substring[m
+[32m+[m[32m     * @param {Number} times[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toIncludeRepeated(substring: string, times: number): void;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Use `.toIncludeMultiple` when checking if a `String` includes all of the given substrings.[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param {Array.<String>} substring[m
+[32m+[m[32m     */[m
+[32m+[m[32m    toIncludeMultiple(substring: string[]): void;[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32minterface JestExpectType {[m
+[32m+[m[32m  not:[m
+[32m+[m[32m    & JestExpectType[m
+[32m+[m[32m    & EnzymeMatchersType[m
+[32m+[m[32m    & DomTestingLibraryType[m
+[32m+[m[32m    & JestJQueryMatchersType[m
+[32m+[m[32m    & JestStyledComponentsMatchersType[m
+[32m+[m[32m    & JestExtendedMatchersType,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * If you have a mock function, you can use .lastCalledWith to test what[m
+[32m+[m[32m   * arguments it was last called with.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  lastCalledWith(...args: Array<any>): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * toBe just checks that a value is what you expect. It uses === to check[m
+[32m+[m[32m   * strict equality.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBe(value: any): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toBeCalledWith to ensure that a mock function was called with[m
+[32m+[m[32m   * specific arguments.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeCalledWith(...args: Array<any>): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Using exact equality with floating point numbers is a bad idea. Rounding[m
+[32m+[m[32m   * means that intuitive things fail.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeCloseTo(num: number, delta: any): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toBeDefined to check that a variable is not undefined.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeDefined(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toBeFalsy when you don't care what a value is, you just want to[m
+[32m+[m[32m   * ensure a value is false in a boolean context.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeFalsy(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * To compare floating point numbers, you can use toBeGreaterThan.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeGreaterThan(number: number): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * To compare floating point numbers, you can use toBeGreaterThanOrEqual.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeGreaterThanOrEqual(number: number): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * To compare floating point numbers, you can use toBeLessThan.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeLessThan(number: number): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * To compare floating point numbers, you can use toBeLessThanOrEqual.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeLessThanOrEqual(number: number): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toBeInstanceOf(Class) to check that an object is an instance of a[m
+[32m+[m[32m   * class.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeInstanceOf(cls: Class<*>): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * .toBeNull() is the same as .toBe(null) but the error messages are a bit[m
+[32m+[m[32m   * nicer.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeNull(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toBeTruthy when you don't care what a value is, you just want to[m
+[32m+[m[32m   * ensure a value is true in a boolean context.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeTruthy(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toBeUndefined to check that a variable is undefined.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toBeUndefined(): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toContain when you want to check that an item is in a list. For[m
+[32m+[m[32m   * testing the items in the list, this uses ===, a strict equality check.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toContain(item: any): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toContainEqual when you want to check that an item is in a list. For[m
+[32m+[m[32m   * testing the items in the list, this matcher recursively checks the[m
+[32m+[m[32m   * equality of all fields, rather than checking for object identity.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toContainEqual(item: any): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toEqual when you want to check that two objects have the same value.[m
+[32m+[m[32m   * This matcher recursively checks the equality of all fields, rather than[m
+[32m+[m[32m   * checking for object identity.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toEqual(value: any): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toHaveBeenCalled to ensure that a mock function got called.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveBeenCalled(): void,[m
+[32m+[m[32m  toBeCalled(): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toHaveBeenCalledTimes to ensure that a mock function got called exact[m
+[32m+[m[32m   * number of times.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveBeenCalledTimes(number: number): void,[m
+[32m+[m[32m  toBeCalledTimes(number: number): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   *[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveBeenNthCalledWith(nthCall: number, ...args: Array<any>): void;[m
+[32m+[m[32m  nthCalledWith(nthCall: number, ...args: Array<any>): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   *[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveReturned(): void;[m
+[32m+[m[32m  toReturn(): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   *[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveReturnedTimes(number: number): void;[m
+[32m+[m[32m  toReturnTimes(number: number): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   *[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveReturnedWith(value: any): void;[m
+[32m+[m[32m  toReturnWith(value: any): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   *[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveLastReturnedWith(value: any): void;[m
+[32m+[m[32m  lastReturnedWith(value: any): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   *[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveNthReturnedWith(nthCall: number, value: any): void;[m
+[32m+[m[32m  nthReturnedWith(nthCall: number, value: any): void;[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toHaveBeenCalledWith to ensure that a mock function was called with[m
+[32m+[m[32m   * specific arguments.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveBeenCalledWith(...args: Array<any>): void,[m
+[32m+[m[32m  toBeCalledWith(...args: Array<any>): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toHaveBeenLastCalledWith to ensure that a mock function was last called[m
+[32m+[m[32m   * with specific arguments.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveBeenLastCalledWith(...args: Array<any>): void,[m
+[32m+[m[32m  lastCalledWith(...args: Array<any>): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Check that an object has a .length property and it is set to a certain[m
+[32m+[m[32m   * numeric value.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveLength(number: number): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   *[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toHaveProperty(propPath: string, value?: any): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toMatch to check that a string matches a regular expression or string.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toMatch(regexpOrString: RegExp | string): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toMatchObject to check that a javascript object matches a subset of the properties of an object.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toMatchObject(object: Object | Array<Object>): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * Use .toStrictEqual to check that a javascript object matches a subset of the properties of an object.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toStrictEqual(value: any): void,[m
+[32m+[m[32m  /**[m
+[32m+[m[32m   * This ensures that an Object matches the most recent snapshot.[m
+[32m+[m[32m   */[m
+[32m+[m[32m  toMatchSnapshot(propertyMatchers?: any, name?: string): void,[m
+[32m+[m[32m  /**[m
+[3
