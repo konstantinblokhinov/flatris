@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  flatris_v3_copmpose:
+    build: .
+    ports:
+    - "9000:3000"
